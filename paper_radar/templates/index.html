@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>已分析会议</h2>
+<ul>
+{% for conf in conferences %}
+  <li>
+    <a href="{{ conf.name }}_{{ conf.year }}.html">{{ conf.name }} {{ conf.year }}</a>
+    {% if conf.deadline %}<span class="badge">截稿: {{ conf.deadline }}</span>{% endif %}
+    {% if conf.triggered_at %}<span class="badge">已触发采集: {{ conf.triggered_at }}</span>{% endif %}
+  </li>
+{% else %}
+  <li>暂无会议数据，请等待自动运行。</li>
+{% endfor %}
+</ul>
+{% endblock %}
