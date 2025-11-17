@@ -17,8 +17,6 @@ def build_env(template_dir: str):
 
 def generate_site(db_path: str, site_dir: str, template_dir: str, site_meta: Dict):
     Path(site_dir).mkdir(parents=True, exist_ok=True)
-    # 确保 GitHub Pages 不使用 Jekyll 解析，避免 README 等文件被当作主页
-    (Path(site_dir) / ".nojekyll").write_text("", encoding="utf-8")
     custom_domain = site_meta.get("custom_domain")
     if custom_domain:
         (Path(site_dir) / "CNAME").write_text(custom_domain.strip() + "\n", encoding="utf-8")

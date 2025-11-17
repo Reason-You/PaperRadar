@@ -59,7 +59,6 @@ PaperRadar 是一个零服务器、全自动的工作流，监控顶级 AI/ML/CV
 - `monitoring.deadline_lag_days` 控制截稿后多久触发采集；`arxiv_batch_days` 控制每日监控窗口。
 - `conferences[].source_priority` 决定抓取顺序，支持 `openreview`、`official`、`arxiv`。
 - 官网采集可配置 `authors_selector`、`affiliations_selector`、`abstract_selector`、`pdf_selector`、`supplemental_selector` 指定 CSS 选择器；未提供时默认读取元素 `data-*` 属性。
-- `site.custom_domain` 会在生成站点时写入 `_site/CNAME`（仓库根目录也包含同名文件），例如设置为 `paperradar.github.io` 可直接使用该域名发布。
 
 ## 目录结构
 - `paper_radar/`：核心 Python 模块与 Jinja2 模板
