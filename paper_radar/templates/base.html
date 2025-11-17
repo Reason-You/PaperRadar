@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ site.title }} - {{ site.author }}</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sakura.css/css/sakura.css" />
+  <style>
+    .badge { padding: 4px 8px; border-radius: 6px; background:#eef; margin-right:6px; }
+    .code-status { font-weight: bold; }
+    .paper { border:1px solid #eee; padding:12px; margin-bottom:12px; border-radius:8px; }
+    .flex { display:flex; gap:12px; flex-wrap:wrap; }
+    .controls { margin: 12px 0; }
+    details summary { cursor:pointer; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{ site.title }}</h1>
+    <p>作者：{{ site.author }}</p>
+    <hr />
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+  <footer>
+    <p>静态生成于客户端。所有数据由 PaperRadar 自动管线提供。</p>
+  </footer>
+</body>
+</html>

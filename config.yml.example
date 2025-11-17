@@ -1,0 +1,55 @@
+# PaperRadar 全局配置示例（请复制为 config.yml 并按需修改）
+conferences:
+  - name: "CVPR"
+    year: 2025
+    arxiv_categories: ["cs.CV", "cs.LG"]
+    keywords: ["CVPR 2025", "Computer Vision"]
+    source_priority: ["openreview", "official", "arxiv"]
+    openreview:
+      venue_id: "thecvf.com/CVPR/2025/Conference"
+      limit: 300
+    official_site:
+      list_url: "https://cvpr2025.thecvf.com/program/main_conference"
+      item_selector: ".paper-item"
+      title_selector: ".title"
+      authors_selector: ".authors"
+      affiliations_selector: ".affiliations"
+      abstract_selector: ".abstract"
+      pdf_selector: "a.pdf"
+      supplemental_selector: "a.supp"
+  - name: "NeurIPS"
+    year: 2025
+    arxiv_categories: ["cs.LG", "cs.AI", "cs.CL", "stat.ML"]
+    keywords: ["NeurIPS 2025", "Neural Information Processing"]
+    source_priority: ["openreview", "arxiv"]
+    openreview:
+      venue_id: "NeurIPS.cc/2025/Conference"
+
+monitoring:
+  deadline_lag_days: 75  # 截稿后多少天开始触发数据采集
+  ccf_repo_dir: ".cache/ccf-deadlines"
+  arxiv_max_results: 50
+  arxiv_batch_days: 2      # 每次监控 arXiv 监测近多少天的结果
+
+llm:
+  provider: "deepseek"     # 优先 deepseek，可选：deepseek, openai
+  model: "deepseek-chat"
+  max_batch_size: 12        # 摘要批处理数量
+
+storage:
+  db_path: "paper_radar.db"
+  site_dir: "_site"
+
+secrets:
+  # 运行时通过环境变量注入，示例：
+  # export DEEPSEEK_API_KEY=your_key
+  # export OPENAI_API_KEY=your_key
+  # export GITHUB_TOKEN=your_token
+  llm_api_key_env: "DEEPSEEK_API_KEY"
+  github_token_env: "GITHUB_TOKEN"
+
+site:
+  author: "PaperRadar"
+  title: "论文雷达"
+  # 自定义域名（写入 _site/CNAME 用于 GitHub Pages），示例：paperradar.github.io
+  custom_domain: "paperradar.github.io"
