@@ -52,4 +52,4 @@ site:
   author: "PaperRadar"
   title: "论文雷达"
   # 自定义域名（写入 _site/CNAME 用于 GitHub Pages），示例：paperradar.github.io
-  custom_domain: "paperradar.github.io"
+  custom_domain: "reason-you.github.io/PaperRadar"

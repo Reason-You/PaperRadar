@@ -65,7 +65,6 @@ class SecretConfig:
 class SiteConfig:
     author: str
     title: str
-    custom_domain: Optional[str] = None
 
 
 @dataclass
