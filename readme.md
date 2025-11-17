@@ -49,7 +49,9 @@ PaperRadar 是一个零服务器、全自动的工作流，监控顶级 AI/ML/CV
 1. 安装依赖
 2. 运行 `setup_db.py` 初始化/迁移数据库
 3. 执行 `run_pipeline.py`
-4. 将更新的 `paper_radar.db` 与 `_site` 静态文件自动 commit & push（确保在仓库启用 GitHub Pages 指向 `_site`）。
+4. 将更新的 `paper_radar.db` 与 `_site` 静态文件自动 commit & push（启用 GitHub Pages 时请选择 main 分支 + 根目录，并保留 `_site` 输出；CNAME 会自动写入 `_site`）。
+
+> GitHub Pages 提示：仓库根目录新增了 `index.html`，会自动重定向到 `_site/index.html`，避免 Pages 默认渲染 README。若想直接用 `_site` 作为 Pages 根目录，可在 Settings → Pages 中选择 `Deploy from a branch` → `main` → `/ (root)`（根目录有重定向）或 `/ _site`（直接使用生成物）。
 
 ## 配置要点
 - 默认优先使用 `DEEPSEEK_API_KEY`。如需 OpenAI，将 `llm.provider` 设为 `openai` 并提供 `OPENAI_API_KEY`。
