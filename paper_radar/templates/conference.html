@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ conf.name }} {{ conf.year }}</h2>
+<p>{{ trend_summary }}</p>
+<div class="controls">
+  <input id="search" type="search" placeholder="搜索标题/摘要" />
+  <select id="topic-filter">
+    <option value="">全部主题</option>
+  </select>
+  <select id="code-filter">
+    <option value="">全部代码状态</option>
+    <option value="Verified">Verified</option>
+    <option value="Placeholder">Placeholder</option>
+    <option value="None">None</option>
+  </select>
+</div>
+<canvas id="bar" height="200"></canvas>
+<div id="papers">
+{% for paper in papers %}
+  <div class="paper" data-title="{{ paper.title }}" data-abstract="{{ paper.abstract }}" data-topics="{{ ','.join(clusters[paper.id]) if clusters[paper.id] else '' }}" data-code="{{ code_map[paper.id][0].status if code_map[paper.id] else '' }}" data-affiliations="{{ paper.affiliations }}">
+    <h3>{{ paper.title }}</h3>
+    <p>{{ paper.authors }}</p>
+    {% if paper.affiliations %}<p class="muted">{{ paper.affiliations }}</p>{% endif %}
+    {% if summaries[paper.id] %}
+      <p><strong>英文TL;DR：</strong>{{ summaries[paper.id].tldr_en }}</p>
+      <p><strong>中文TL;DR：</strong>{{ summaries[paper.id].tldr_zh }}</p>
+    {% endif %}
+    <div class="flex">
+      {% if paper.pdf_url %}<a href="{{ paper.pdf_url }}" target="_blank">PDF</a>{% endif %}
+      {% if paper.supplemental_url %}<a href="{{ paper.supplemental_url }}" target="_blank">补充材料</a>{% endif %}
+      {% if code_map[paper.id] %}
+        {% for link in code_map[paper.id] %}
+          <a href="{{ link.url }}" target="_blank">代码 ({{ link.status }})</a>
+        {% endfor %}
+      {% endif %}
+    </div>
+    <p><strong>主题：</strong>{% for t in clusters[paper.id] %}<span class="badge">{{ t }}</span>{% endfor %}</p>
+    <details>
+      <summary>显示摘要</summary>
+      <p>{{ paper.abstract }}</p>
+    </details>
+  </div>
+{% endfor %}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
+<canvas id="wordcloud" width="400" height="250"></canvas>
+<script>
+const clusterCounts = {{ cluster_counts|safe }};
+const topics = Object.keys(clusterCounts);
+const counts = Object.values(clusterCounts);
+if (topics.length) {
+  const ctx = document.getElementById('bar');
+  new Chart(ctx, {
+    type: 'bar',
+    data: { labels: topics, datasets: [{ label: '主题热度', data: counts }] },
+  });
+  const wcList = topics.map((t, i) => [t, counts[i]]);
+  WordCloud(document.getElementById('wordcloud'), { list: wcList });
+}
+const searchInput = document.getElementById('search');
+const topicFilter = document.getElementById('topic-filter');
+const codeFilter = document.getElementById('code-filter');
+const paperEls = Array.from(document.querySelectorAll('.paper'));
+const topicSet = new Set();
+paperEls.forEach(el => {
+  el.dataset.topics.split(',').filter(Boolean).forEach(t => topicSet.add(t));
+});
+for (const t of topicSet) {
+  const opt = document.createElement('option');
+  opt.value = t; opt.textContent = t; topicFilter.appendChild(opt);
+}
+function applyFilters() {
+  const q = searchInput.value.toLowerCase();
+  const topic = topicFilter.value;
+  const code = codeFilter.value;
+  paperEls.forEach(el => {
+    const matchText = (el.dataset.title + ' ' + el.dataset.abstract).toLowerCase().includes(q);
+    const matchTopic = !topic || el.dataset.topics.includes(topic);
+    const matchCode = !code || el.dataset.code === code;
+    el.style.display = matchText && matchTopic && matchCode ? 'block' : 'none';
+  });
+}
+searchInput.addEventListener('input', applyFilters);
+topicFilter.addEventListener('change', applyFilters);
+codeFilter.addEventListener('change', applyFilters);
+applyFilters();
+</script>
+{% endblock %}

@@ -1,0 +1,12 @@
+# Environment and editor
+.env
+.venv/
+__pycache__/
+*.pyc
+
+# OS artifacts
+.DS_Store
+
+# Virtual environment folders
+.env.local
+
