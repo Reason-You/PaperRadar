@@ -100,10 +100,6 @@ class Pipeline:
             self.db_path,
             self.site_dir,
             str(Path(__file__).parent / "templates"),
-            {
-                "author": self.config.site.author,
-                "title": self.config.site.title,
-                "custom_domain": self.config.site.custom_domain,
-            },
+            {"author": self.config.site.author, "title": self.config.site.title},
         )
         logger.info("静态站点生成完成 -> %s", self.site_dir)
